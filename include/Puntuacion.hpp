@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Puntuacion.hpp"
 
 Puntuacion::Puntuacion() : puntuacion(0) {
