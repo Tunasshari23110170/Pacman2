@@ -1,22 +1,37 @@
-#pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "Vida.hpp"
-
-class Pacman {
+#include <stdexcept>
+class Pacman
+{
 private:
-    sf::Sprite sprite;
-    sf::Texture texture;
-    sf::SoundBuffer bufferComer;
-    sf::Sound sonidoComer;
-    Vida vida;
-    int puntuacion;
+   sf::Texture imagen;
+   sf::Sprite sprite;
+   float velocidad;
 public:
-    Pacman();
-    void mover(sf::Keyboard::Key key);
-    void dibujar(sf::RenderWindow &ventana);
-    void comer();
-    int getPuntuacion() const;
-    sf::FloatRect getBounds() const;
-};
+    Pacman() {
+        if(!imagen.loadFromFile("./images/pacman1.png")){
+            throw std::runtime_error("No se pudo cargar imagen");
+        }
+        velocidad = 0.1;
+        sprite.setTexture(imagen);
+        sprite.scale(sf::Vector2f(0.2f,0.2f));
 
+    }
+    ~Pacman() {}
+    void MoveRight(){
+        sprite.move(sf::Vector2f(velocidad,0));
+
+    }
+    void MoveLeft(){
+        sprite.move(sf::Vector2f(velocidad*-1,0));
+    }
+    void MoveUp(){
+        sprite.move(sf::Vector2f(0,0));
+    }
+    void MoveDown(){
+        sprite.move(sf::Vector2f(0, velocidad));
+    }
+    void Draw(sf::RenderWindow &window){
+        window.draw(sprite);
+    }
+  
+};

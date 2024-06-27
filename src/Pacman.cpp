@@ -1,20 +1,21 @@
-#include "Pacman.h"
+#include <SFML/Graphics.hpp>
+#include "Pacman.hpp"
 
-Pacman::Pacman() : vida(3), puntuacion(0) {
+Pacman::pacman() : vida(3), puntuacion(0) {
     if (!texture.loadFromFile("pacman.png")) {
         // Error handling
     }
     sprite.setTexture(texture);
     sprite.setPosition(100, 100);
 
-    // Cargar el sonido de comer
-    if (!bufferComer.loadFromFile("comer.wav")) {
+    // Cargar el sonido de inicio
+    if (!bufferInicio.loadFromFile("intro.wav")) {
         // Error handling
     }
-    sonidoComer.setBuffer(bufferComer);
+    sonidoInicio.setBuffer(bufferInicio);
 }
 
-void Pacman::mover(sf::Keyboard::Key key) {
+void pacman::mover(sf::Keyboard::Key key) {
     switch (key) {
         case sf::Keyboard::Left:
             sprite.move(-10, 0);
@@ -33,19 +34,15 @@ void Pacman::mover(sf::Keyboard::Key key) {
     }
 }
 
-void Pacman::dibujar(sf::RenderWindow &ventana) {
+void pacman::draw(sf::RenderWindow &ventana) {
     ventana.draw(sprite);
 }
 
-void Pacman::comer() {
-    puntuacion += 10;
-    sonidoComer.play();
-}
 
-int Pacman::getPuntuacion() const {
+int pacman::getPuntuacion() const {
     return puntuacion;
 }
 
-sf::FloatRect Pacman::getBounds() const {
+sf::FloatRect pacman::getBounds() const {
     return sprite.getGlobalBounds();
 }

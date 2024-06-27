@@ -1,0 +1,11 @@
+@startuml Pacman 
+
+class Personaje{
+    + MoveLeft()
+    + MoveRight()
+    + MoverUp()
+    + MoverDown()
+}
+class Vida
+class Puntuacion
+class Comida
