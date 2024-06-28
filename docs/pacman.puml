@@ -6,6 +6,28 @@ class Personaje{
     + MoverUp()
     + MoverDown()
 }
+
+class Pacman{
+    +MoveLeft
+    +MoverDown
+    +MoveRight
+    +MoverUp
+}
+
+class Fantasma{
+    +MoveLeft
+    +MoverDown
+    +MoveRight
+    +MoverUp
+}
 class Vida
 class Puntuacion
 class Comida
+class Juego
+
+
+ Juego "1" --* "1" Personaje 
+ Pacman "1" --|> "1..*" Personaje
+ Fantasma "1" --|> "1..*" Personaje
+ 
+ @enduml
