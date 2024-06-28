@@ -6,14 +6,14 @@ class Personaje
 public:
     Personaje(sf::Vector2f position)
     {
-        if (!texture.loadFromFile("./images/sprite.png"))
+        if (!texture.loadFromFile("./images/spritepacman.png"))
         {
             // Handle error
             std::cerr << "Error loading texture" << std::endl;
         }
         sprite.setTexture(texture);
         sprite.setPosition(2,1); // Initial sprite position
-        sprite.scale(sf::Vector2f(0.25f, 0.25f));
+        sprite.scale(sf::Vector2f(0.75f, 0.75f));
 
         // Adjust the frame size based on the texture
         frameWidth = texture.getSize().x / numFrames;
