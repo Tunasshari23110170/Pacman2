@@ -1,60 +1,71 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
-
-class Personaje
-{
-public:
-    Personaje(sf::Vector2f position)
-    {
-        if (!texture.loadFromFile("./images/spritepacman.png"))
-        {
-            // Handle error
-            std::cerr << "Error loading texture" << std::endl;
-        }
-        sprite.setTexture(texture);
-        sprite.setPosition(2,1); // Initial sprite position
-        sprite.scale(sf::Vector2f(0.75f, 0.75f));
-
-        // Adjust the frame size based on the texture
-        frameWidth = texture.getSize().x / numFrames;
-        frameHeight = texture.getSize().y;
-    }
-
-    void move(float offsetX, float offsetY)
-    {
-        sprite.move(offsetX, offsetY);
-    }
-
-    void draw(sf::RenderWindow &window)
-    {
-        window.draw(sprite);
-    }
-
-    void update()
-    {
-        // Update the animation frame
-        if (clock.getElapsedTime().asSeconds() >= frameTime)
-        {
-            currentFrame = (currentFrame + 1) % numFrames;
-            sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
-            clock.restart();
-        }
-    }
-
-private:
-    sf::Sprite sprite;
-    sf::Texture texture;
-    sf::Clock clock;
-    float frameTime = 0.2f; // Time between each frame in seconds
-    int currentFrame = 0;
-    int numFrames = 4; // Total number of frames in the animation
-    int frameWidth;
-    int frameHeight;
-};
+#include <PantallaInicio.hpp>
+#include <Personaje.hpp> 
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Pac-Man");
+
+    // Load background textures
+    sf::Texture backgroundTexture1; //carga el mapa 1
+    if (!backgroundTexture1.loadFromFile("./images/map1.png"))
+    {
+        // Handle error
+        std::cerr << "Error loading background texture 1" << std::endl;
+    }
+
+    sf::Texture backgroundTexture2; //mapa 2
+    if (!backgroundTexture2.loadFromFile("./images/map2.png"))
+    {
+        // Handle error
+        std::cerr << "Error loading background texture 2" << std::endl;
+    }
+
+    sf::Texture backgroundTexture3; //mapa 3
+    if (!backgroundTexture3.loadFromFile("./images/map3.png"))
+    {
+        // Handle error
+        std::cerr << "Error loading background texture 3" << std::endl;
+    }
+    
+    sf::Texture backgroundTexture4; //mapa 4
+    if (!backgroundTexture4.loadFromFile("./images/map4.png"))
+    {
+        // Handle error
+        std::cerr << "Error loading background texture 4" << std::endl;
+    }
+
+    // Create background sprites
+    sf::Sprite backgroundSprite1;
+    backgroundSprite1.setTexture(backgroundTexture1);
+    backgroundSprite1.setScale(0.9f, 0.9f); // Scale the first background
+
+    sf::Sprite backgroundSprite2;
+    backgroundSprite2.setTexture(backgroundTexture2);
+    backgroundSprite2.setPosition(0, 0); // Position the second background next to the first one
+    backgroundSprite2.setScale(0.9f, 0.9f); // Scale the second background
+    
+    sf::Sprite backgroundSprite3;
+    backgroundSprite3.setTexture(backgroundTexture3);
+    backgroundSprite3.setPosition(0, 0); 
+    backgroundSprite3.setScale(0.9f, 0.9f); 
+    
+    sf::Sprite backgroundSprite4;
+    backgroundSprite4.setTexture(backgroundTexture4);
+    backgroundSprite4.setPosition(0, 0); // Position the fourth background next to the first one
+    backgroundSprite4.setScale(0.9f, 0.9f); // Scale the fourth background
+
+    // Load background music
+    sf::Music backgroundMusic;
+    if (!backgroundMusic.openFromFile("./sounds/intro.wav"))
+    {
+        // Handle error
+        std::cerr << "Error loading background music" << std::endl;
+    }
+    backgroundMusic.setLoop(true); // Set the music to loop
+    backgroundMusic.play(); // Play the music
 
     Personaje pacman(sf::Vector2f(500, 500));
 
@@ -96,7 +107,11 @@ int main()
         pacman.update();
 
         window.clear();
-        pacman.draw(window);
+        window.draw(backgroundSprite1); // Draw the first background
+        window.draw(backgroundSprite2); // Draw the second background
+        window.draw(backgroundSprite3); // Draw the third background
+        window.draw(backgroundSprite4); // Draw the fourth background
+        pacman.draw(window); // Draw Pac-Man
         window.display();
     }
 
