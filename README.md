@@ -15,7 +15,8 @@ Los objetivos especificos de este proyecto son:
 
 
 
-###hhijouy78yh8u9
+
+
 ## Carpetas Utilizadas
 - bin/ - Contiene los ejecutables del proyecto
 - src/ - Contiene el codigo fuente
