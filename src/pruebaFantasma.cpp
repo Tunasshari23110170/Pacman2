@@ -1,38 +1,60 @@
 #include <SFML/Graphics.hpp>
-#include <Fantasma.hpp>
+#include <iostream>
 
-int main(int argc, char const *argv[])
-{
-    Fantasma fantasma;
+class Fantasma {
+public:
+    Fantasma(sf::Vector2f position) {
+        if (!texture.loadFromFile("./images/spritefantasma.png")) {
+            std::cerr << "Error loading texture" << std::endl;
+        } else {
+            sprite.setTexture(texture);
+            sprite.setPosition(position);
+            sprite.setScale(sf::Vector2f(0.25f, 0.25f)); // Ajusta el tamaño del sprite
+        }
+    }
 
-    // Crear una ventana de SFML
-    sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+    void move(float offsetX, float offsetY) {
+        sprite.move(offsetX, offsetY);
+    }
 
-    // Crear una forma circular de SFML
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    void draw(sf::RenderWindow &window) {
+        window.draw(sprite);
+    }
 
-    while (window.isOpen())
-    {
+private:
+    sf::Texture texture;
+    sf::Sprite sprite;
+};
+
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Fantasma");
+
+    Fantasma fantasma(sf::Vector2f(100, 100));
+
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            // Verificar si se ha cerrado la ventana
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
-        fantasma.MoveDown();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            fantasma.move(-0.1f, 0.0f);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            fantasma.move(0.1f, 0.0f);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            fantasma.move(0.0f, -0.1f);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            fantasma.move(0.0f, 0.1f);
+        }
 
-        // Limpiar la ventana
         window.clear();
-
-        fantasma.Draw(window);
-
-        // Mostrar la ventana
+        fantasma.draw(window);
         window.display();
     }
 
     return 0;
 }
-//kk

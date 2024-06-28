@@ -1,35 +1,38 @@
 #include <SFML/Graphics.hpp>
+#include <Fantasma.hpp>
 
-class Fantasma
+int main(int argc, char const *argv[])
 {
-private:
-    sf::Texture imagen;
-    sf::Sprite sprite;
-    float velocidad;
-public:
-    Fantasma() {
-        imagen.loadFromFile("./images/fantasma.png");
-        velocidad = 0.1;
-        sprite.setTexture(imagen);
-        sprite.scale(sf::Vector2f(0.25f, 0.25f));
-    }
-    ~Fantasma() {}
-    void MoveRight(){
-        sprite.move(sf::Vector2f(velocidad, 0));
-    }
-    void MoveLeft(){
-        sprite.move(sf::Vector2f(velocidad*-1, 0));
-    }
-    void MoveUp(){
-        sprite.move(sf::Vector2f(0, 0));
-    }
-    void MoveDown(){
-        sprite.move(sf::Vector2f(0, velocidad));
-    }
-    void Draw(sf::RenderWindow &window){
-        window.draw(sprite);
+    Fantasma fantasma;
+
+    // Crear una ventana de SFML
+    sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+
+    // Crear una forma circular de SFML
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // Verificar si se ha cerrado la ventana
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        fantasma.MoveDown();
+
+        // Limpiar la ventana
+        window.clear();
+
+        fantasma.Draw(window);
+
+        // Mostrar la ventana
+        window.display();
     }
 
-
-};
-//hola 
+    return 0;
+}
+//kk
