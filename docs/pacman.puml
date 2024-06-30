@@ -7,12 +7,6 @@ class Personaje{
     + MoverDown()
 }
 
-class Pacman{
-    +MoveLeft
-    +MoverDown
-    +MoveRight
-    +MoverUp
-}
 
 class Fantasma{
     +MoveLeft
@@ -22,12 +16,14 @@ class Fantasma{
 }
 class Vida
 class Puntuacion
-class Comida
-class Juego
+class ObjetoComible
+class Jugador
 
-
- Juego "1" --* "1" Personaje 
+ Jugador "1" --* "1" Personaje 
  Pacman "1" --|> "1..*" Personaje
  Fantasma "1" --|> "1..*" Personaje
- 
+ Pacman "1" --* "1..*" ObjetoComible
+ Jugador "1" --o "1" Pacman
+ Jugador "1" --* "1..*" Puntuacion
+ Jugador "1" --* "1..*" Vida
  @enduml
