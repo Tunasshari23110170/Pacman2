@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
 class Personaje
 {
 public:
@@ -11,7 +12,7 @@ public:
             std::cerr << "Error loading texture" << std::endl;
         }
         sprite.setTexture(texture);
-        sprite.setPosition(20,24);
+        sprite.setPosition(position);
         sprite.scale(sf::Vector2f(0.70f, 0.70f));
 
         // Adjust the frame size based on the texture
@@ -38,6 +39,16 @@ public:
             sprite.setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
             clock.restart();
         }
+    }
+
+    sf::Vector2f getPosition() const
+    {
+        return sprite.getPosition();
+    }
+
+    sf::FloatRect getGlobalBounds() const
+    {
+        return sprite.getGlobalBounds();
     }
 
 private:

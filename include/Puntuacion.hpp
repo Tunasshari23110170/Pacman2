@@ -1,21 +1,31 @@
 #include <iostream>
-#include "Puntuacion.hpp"
 
-Puntuacion::Puntuacion() : puntuacion(0) {
-    if (!font.loadFromFile("Browse.ttf")) {
-        // Error handling
+class Puntuacion {
+private:
+    int puntuacion;  // Puntuación actual del jugador
+
+public:
+    // Constructor
+    Puntuacion() : puntuacion(0) {}
+
+    // Método para añadir puntos
+    void agregarPuntos(int puntos) {
+        puntuacion += puntos;
     }
-    text.setFont(font);
-    text.setCharacterSize(24);
-    text.setFillColor(sf::Color::Blue);
-    text.setPosition(10, 10);
-}
 
-void Puntuacion::incrementar(int puntos) {
-    puntuacion += puntos;
-    text.setString("tu puntuacion es: " + std::to_string(puntuacion));
-}
+    // Método para obtener la puntuación actual
+    int obtenerPuntuacion() const {
+        return puntuacion;
+    }
 
-void Puntuacion::dibujar(sf::RenderWindow &ventana) {
-    ventana.draw(text);
-}
+    // Método para restablecer la puntuación
+    void restablecer() {
+        puntuacion = 0;
+    }
+
+    // Método para mostrar la puntuación en la consola
+    void mostrar() const {
+        std::cout << "Puntuación actual: " << puntuacion << std::endl;
+    }
+};
+
