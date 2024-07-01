@@ -20,7 +20,7 @@ int main()
         return 0; // Terminar el programa si no se proporciona un nombre
     }
 
-    Personaje pacman(sf::Vector2f(200, 300));
+    Personaje pacman(sf::Vector2f(250, 300));
 
     // Cargar imágenes de fondo
     sf::Texture fondoTexture1;
@@ -64,15 +64,15 @@ int main()
     comestibles.push_back(comestible1);
 
     Comestible comestible2(0, 0, 200);
-    comestible2.setPosition(400, 400);
+    comestible2.setPosition(400, 330);
     comestibles.push_back(comestible2);
 
     Comestible comestible3(0, 0, 200);
-    comestible3.setPosition(300, 300);
+    comestible3.setPosition(260, 280);
     comestibles.push_back(comestible3);
 
     Comestible comestible4(0, 0, 200);
-    comestible4.setPosition(600, 600);
+    comestible4.setPosition(530, 220);
     comestibles.push_back(comestible4);
 
     double velocidad = 100.0;
@@ -160,6 +160,24 @@ int main()
         text.setPosition(10, 10);
 
         window.draw(text);
+
+        // Verificar si se han comido todos los comestibles
+        if (comestibles.empty())
+        {
+            // Mostrar el mensaje de victoria
+            sf::Text winText;
+            winText.setFont(font);
+            winText.setString("GANASTE!");
+            winText.setCharacterSize(50);
+            winText.setFillColor(sf::Color::Yellow);
+            winText.setPosition(windowSize.x / 2.f - 100, windowSize.y / 2.f - 25);
+            window.draw(winText);
+            window.display();
+
+            // Esperar unos segundos antes de cerrar la ventana
+            sf::sleep(sf::seconds(3));
+            window.close();
+        }
 
         window.display();
     }
