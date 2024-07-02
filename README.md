@@ -4,6 +4,8 @@
 <p align="justify">
 Es un juego clásico donde controlas a un personaje amarillo llamado Pac-Man que debe comer todos los puntos en un laberinto mientras evita ser atrapado por fantasmas. Puedes comer superpíldoras para volverte invulnerable temporalmente y perseguir a los fantasmas para ganar puntos adicionales. El objetivo es limpiar cada nivel del laberinto sin ser atrapado por los fantasmas que se vuelven más rápidos y astutos conforme avanzas en el juego.
 
+![alt text](./images/Juego.png)
+
 ## Fuente de apoyo 
 https://youtu.be/_dqnnFUWT_Q?feature=shared
  

@@ -60,19 +60,19 @@ int main()
 
     // Crear comestibles y ajustar posiciones
     std::vector<Comestible> comestibles;
-    Comestible comestible1(0, 0, 100);
+    Comestible comestible1(0, 0, 1);
     comestible1.setPosition(200, 200);
     comestibles.push_back(comestible1);
 
-    Comestible comestible2(0, 0, 200);
+    Comestible comestible2(0, 0, 1);
     comestible2.setPosition(400, 330);
     comestibles.push_back(comestible2);
 
-    Comestible comestible3(0, 0, 200);
+    Comestible comestible3(0, 0, 1);
     comestible3.setPosition(260, 280);
     comestibles.push_back(comestible3);
 
-    Comestible comestible4(0, 0, 200);
+    Comestible comestible4(0, 0, 1);
     comestible4.setPosition(530, 220);
     comestibles.push_back(comestible4);
 
@@ -109,21 +109,22 @@ int main()
         {
             sf::Time deltaTime = deltaClock.restart();
 
+            // Control de movimiento invertido
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                pacman.move(-velocidad * deltaTime.asSeconds(), 0);
+                pacman.move(velocidad * deltaTime.asSeconds(), 0); // Movimiento a la derecha
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                pacman.move(velocidad * deltaTime.asSeconds(), 0);
+                pacman.move(-velocidad * deltaTime.asSeconds(), 0); // Movimiento a la izquierda
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
-                pacman.move(0, -velocidad * deltaTime.asSeconds());
+                pacman.move(0, velocidad * deltaTime.asSeconds()); // Movimiento hacia abajo
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             {
-                pacman.move(0, velocidad * deltaTime.asSeconds());
+                pacman.move(0, -velocidad * deltaTime.asSeconds()); // Movimiento hacia arriba
             }
 
             // Update Pac-Man animation
@@ -233,3 +234,7 @@ int main()
 
     return 0;
 }
+
+
+
+
