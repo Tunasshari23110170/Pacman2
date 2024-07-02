@@ -6,6 +6,7 @@
 #include "PantallaInicio.hpp"
 #include "Puntuacion.hpp"
 #include "Comestible.hpp"
+#include "Fantasma.hpp"
 
 int main()
 {
@@ -79,6 +80,20 @@ int main()
 
     sf::Clock deltaClock;
 
+    // Crear fantasmas y ajustar posiciones y escalas
+    std::vector<Fantasma> fantasmas;
+    fantasmas.emplace_back(sf::Vector2f(100, 100));
+    fantasmas.emplace_back(sf::Vector2f(700, 100));
+    fantasmas.emplace_back(sf::Vector2f(100, 500));
+    fantasmas.emplace_back(sf::Vector2f(700, 500));
+
+    for (auto& fantasma : fantasmas)
+    {
+        fantasma.setScale(0.10f, 0.10f); // Ajustar la escala de los fantasmas
+    }
+
+    bool juegoEnCurso = true;
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -90,96 +105,130 @@ int main()
             }
         }
 
-        sf::Time deltaTime = deltaClock.restart();
+        if (juegoEnCurso)
+        {
+            sf::Time deltaTime = deltaClock.restart();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            pacman.move(-velocidad * deltaTime.asSeconds(), 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            pacman.move(velocidad * deltaTime.asSeconds(), 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            pacman.move(0, -velocidad * deltaTime.asSeconds());
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            pacman.move(0, velocidad * deltaTime.asSeconds());
-        }
-
-        // Update Pac-Man animation
-        pacman.update();
-
-        // Verificar si Pac-Man ha comido algún comestible
-        for (auto it = comestibles.begin(); it != comestibles.end();)
-        {
-            sf::FloatRect comestibleBounds(it->getX(), it->getY(), 20, 20); // Asume que el comestible es un círculo de 20x20
-            if (pacman.getGlobalBounds().intersects(comestibleBounds))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
-                puntuacion.agregarPuntos(it->getPuntuacion());
-                it = comestibles.erase(it); // Eliminar el comestible comido
+                pacman.move(-velocidad * deltaTime.asSeconds(), 0);
             }
-            else
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
-                ++it;
+                pacman.move(velocidad * deltaTime.asSeconds(), 0);
             }
-        }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                pacman.move(0, -velocidad * deltaTime.asSeconds());
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            {
+                pacman.move(0, velocidad * deltaTime.asSeconds());
+            }
 
-        window.clear();
-        
-        // Dibujar los fondos
-        window.draw(fondoSprite1);
-        
-        // Dibujar los comestibles
-        for (const auto& comestible : comestibles)
-        {
-            sf::CircleShape shape(5); // Radio de 5
-            shape.setFillColor(sf::Color::Red);
-            shape.setPosition(comestible.getX(), comestible.getY());
-            window.draw(shape);
-        }
-        
-        // Dibujar el personaje
-        pacman.draw(window);
+            // Update Pac-Man animation
+            pacman.update();
 
-        // Mostrar la puntuación
-        sf::Font font;
-        if (!font.loadFromFile("./fonts/Brose.ttf"))
-        {
-            std::cerr << "Error al cargar la fuente" << std::endl;
-            return 1;
-        }
+            // Verificar si Pac-Man ha comido algún comestible
+            for (auto it = comestibles.begin(); it != comestibles.end();)
+            {
+                sf::FloatRect comestibleBounds(it->getX(), it->getY(), 20, 20); // Asume que el comestible es un círculo de 20x20
+                if (pacman.getGlobalBounds().intersects(comestibleBounds))
+                {
+                    puntuacion.agregarPuntos(it->getPuntuacion());
+                    it = comestibles.erase(it); // Eliminar el comestible comido
+                }
+                else
+                {
+                    ++it;
+                }
+            }
 
-        sf::Text text;
-        text.setFont(font);
-        text.setString("Puntuacion: " + std::to_string(puntuacion.obtenerPuntuacion()));
-        text.setCharacterSize(24);
-        text.setFillColor(sf::Color::White);
-        text.setPosition(10, 10);
+            // Mover fantasmas aleatoriamente
+            for (auto& fantasma : fantasmas)
+            {
+                fantasma.moveRandomly(deltaTime);
+            }
 
-        window.draw(text);
+            // Verificar colisiones entre Pac-Man y fantasmas
+            for (const auto& fantasma : fantasmas)
+            {
+                if (pacman.getGlobalBounds().intersects(fantasma.getGlobalBounds()))
+                {
+                    juegoEnCurso = false;
+                    break;
+                }
+            }
 
-        // Verificar si se han comido todos los comestibles
-        if (comestibles.empty())
-        {
-            // Mostrar el mensaje de victoria
-            sf::Text winText;
-            winText.setFont(font);
-            winText.setString("GANASTE!");
-            winText.setCharacterSize(50);
-            winText.setFillColor(sf::Color::Yellow);
-            winText.setPosition(windowSize.x / 2.f - 100, windowSize.y / 2.f - 25);
-            window.draw(winText);
+            window.clear();
+
+            // Dibujar los fondos
+            window.draw(fondoSprite1);
+
+            // Dibujar los comestibles
+            for (const auto& comestible : comestibles)
+            {
+                sf::CircleShape shape(5); // Radio de 5
+                shape.setFillColor(sf::Color::Red);
+                shape.setPosition(comestible.getX(), comestible.getY());
+                window.draw(shape);
+            }
+
+            // Dibujar los fantasmas
+            for (const auto& fantasma : fantasmas)
+            {
+                fantasma.draw(window);
+            }
+
+            // Dibujar el personaje
+            pacman.draw(window);
+
+            // Mostrar la puntuación
+            sf::Font font;
+            if (!font.loadFromFile("./fonts/Brose.ttf"))
+            {
+                std::cerr << "Error al cargar la fuente" << std::endl;
+                return 1;
+            }
+
+            sf::Text text;
+            text.setFont(font);
+            text.setString("Puntuacion: " + std::to_string(puntuacion.obtenerPuntuacion()));
+            text.setCharacterSize(24);
+            text.setFillColor(sf::Color::White);
+            text.setPosition(10, 10);
+
+            window.draw(text);
+
+            // Verificar si se han comido todos los comestibles
+            if (comestibles.empty())
+            {
+                // Mostrar el mensaje de victoria
+                sf::Text winText;
+                winText.setFont(font);
+                winText.setString("GANASTE!");
+                winText.setCharacterSize(72);
+                winText.setFillColor(sf::Color::Yellow);
+                winText.setPosition(200, 200);
+
+                window.draw(winText);
+            }
+
+            // Verificar si ha perdido
+            if (!juegoEnCurso)
+            {
+                sf::Text loseText;
+                loseText.setFont(font);
+                loseText.setString("PERDISTE!!");
+                loseText.setCharacterSize(72);
+                loseText.setFillColor(sf::Color::Red);
+                loseText.setPosition(200, 200);
+
+                window.draw(loseText);
+            }
+
             window.display();
-
-            // Esperar unos segundos antes de cerrar la ventana
-            sf::sleep(sf::seconds(3));
-            window.close();
         }
-
-        window.display();
     }
 
     return 0;

@@ -14,16 +14,19 @@ class Fantasma{
     +MoveRight
     +MoverUp
 }
-class Vida
+
 class Puntuacion
-class ObjetoComible
-class Jugador
+class Comestible
+class PantallaInicio
+class Colisionable
+class Juego
 
  Jugador "1" --* "1" Personaje 
  Pacman "1" --|> "1..*" Personaje
- Fantasma "1" --|> "1..*" Personaje
- Pacman "1" --* "1..*" ObjetoComible
+ Fantasma "1" --|> "1..*" Colisionable
+ Personaje "1" --* "4.." Comestible
  Jugador "1" --o "1" Pacman
  Jugador "1" --* "1..*" Puntuacion
  Jugador "1" --* "1..*" Vida
+Juego "1" --o "1" PantallaInicio
  @enduml
